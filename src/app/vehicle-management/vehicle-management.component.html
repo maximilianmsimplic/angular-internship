@@ -1,0 +1,31 @@
+<!---<div *ngFor="let field of fields">
+    <label>{{field}}: </label>
+    <input type="text" />
+</div>--->
+<form [formGroup]="vehicleForm" (ngSubmit)="onSave()">
+    <label for="Id">Id: </label>
+    <input id="Id" type="text" formControlName="Id" />
+    <br />
+    <label for="RegistrationPlate">RegistrationPlate: </label>
+    <input id="RegistrationPlate" type="text" formControlName="RegistrationPlate" />
+    <br />
+    <label>Brand: </label>
+    <input id="Brand" type="text" formControlName="Brand" />
+    <br />
+    <label>Model: </label>
+    <input id="Model" type="text" formControlName="Model" />
+    <br />
+    <label>RegistrationDate: </label>
+    <input id="RegistrationDate" type="date" formControlName="RegistrationDate" />
+    <br />
+    <label>Mileage: </label>
+    <input id="Mileage" type="number" formControlName="Mileage" />
+    <br />
+    <label>IsInsured: </label>
+    <input id="IsInsured" type="checkbox" formControlName="IsInsured" />
+    <br />
+    <label>OwnerMail: </label>
+    <input id="OwnerMail" type="email" formControlName="OwnerMail" />
+    <br />
+    <button type="submit">Speichern</button>
+</form>
