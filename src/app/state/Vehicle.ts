@@ -1,12 +1,12 @@
 export class Vehicle {
   constructor(
-    public Id: string,
-    public RegistrationPlate: string,
-    public Brand: string[],
-    public Model: string,
-    public RegistrationDate: Date,
-    public Mileage: number,
-    public IsInsured: boolean,
-    public OwnerMail: string
+    public id: string,
+    public registrationPlate: string,
+    public brand: string[],
+    public model: string,
+    public registrationDate: Date,
+    public mileage: number,
+    public isInsured: boolean,
+    public ownerMail: string
   ) {}
 }

@@ -63,18 +63,18 @@ export class VehicleDetailComponent implements OnInit {
       );
     }
     this.vehicleForm.reset({
-      Id: vehicle.Id,
-      RegistrationPlate: vehicle.RegistrationPlate,
-      Brand: vehicle.Brand,
-      Model: vehicle.Model,
+      Id: vehicle.id,
+      RegistrationPlate: vehicle.registrationPlate,
+      Brand: vehicle.brand,
+      Model: vehicle.model,
       RegistrationDate: formatDate(
-        vehicle.RegistrationDate,
+        vehicle.registrationDate,
         'yyyy-MM-dd',
         'en'
       ),
-      Mileage: vehicle.Mileage,
-      IsInsured: vehicle.IsInsured,
-      OwnerMail: vehicle.OwnerMail,
+      Mileage: vehicle.mileage,
+      IsInsured: vehicle.isInsured,
+      OwnerMail: vehicle.ownerMail,
     });
   }
 

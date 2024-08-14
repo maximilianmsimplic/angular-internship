@@ -6,6 +6,7 @@ export const initialState: Vehicle[] = [];
 
 export const VehicleListReducer = createReducer(
   initialState,
+  on(VehicleActions.loadVehicles, (state, action) => action.vehicles),
   on(VehicleActions.addVehicle, (state, action) => [...state, action.vehicle]),
   on(VehicleActions.editVehicle, (state, action) => {
     const shallowCopy = [...state];

@@ -1,0 +1,40 @@
+{
+  "vehicles": [
+    {
+      "id": "A",
+      "registrationPlate": "ghghgh",
+      "brand": [
+        "hghgh"
+      ],
+      "model": "a",
+      "registrationDate": "2024-08-14T00:00:00.000Z",
+      "mileage": 0,
+      "isInsured": false,
+      "ownerMail": "abc@mail.de"
+    },
+    {
+      "id": "1",
+      "registrationPlate": "sdsd",
+      "brand": [
+        "lll"
+      ],
+      "model": "sdsd",
+      "registrationDate": "2024-08-14T00:00:00.000Z",
+      "mileage": 999,
+      "isInsured": true,
+      "ownerMail": "abc@mail.de"
+    },
+    {
+      "id": "ABCD",
+      "registrationPlate": "ghghgh",
+      "brand": [
+        "hghgh"
+      ],
+      "model": "abc",
+      "registrationDate": "2024-08-14T00:00:00.000Z",
+      "mileage": 0,
+      "isInsured": false,
+      "ownerMail": "abc@mail.de"
+    }
+  ]
+}
