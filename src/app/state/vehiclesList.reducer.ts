@@ -14,7 +14,7 @@ export const VehicleListReducer = createReducer(
   }),
   on(VehicleActions.deleteVehicle, (state, action) => {
     const shallowCopy = [...state];
-    delete shallowCopy[action.index];
+    state.splice(action.index, 1);
     return shallowCopy;
   })
 );
