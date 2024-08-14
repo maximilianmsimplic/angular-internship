@@ -10,9 +10,3 @@ export class Vehicle {
     public OwnerMail: string
   ) {}
 }
-
-export interface VehicleStateModel {
-  vehicles: Vehicle[];
-  selectedVehicleIndex: number | undefined;
-  isNewVehicle: boolean;
-}

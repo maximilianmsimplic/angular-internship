@@ -1,9 +1,9 @@
 <p>Fahrzeuge:</p>
-<div *ngIf="vehicles.length === 0; else vehicleTable">
+<div *ngIf="(vehicles$ | async)?.length == 0; else vehicleTable">
   Keine Fahrzeuge vorhanden
 </div>
 <ng-template #vehicleTable>
-  <p-table [value]="indexedVehicles">
+  <p-table [value]="(vehicles$ | async) ?? []">
     <ng-template pTemplate="header">
       <tr>
         <th>Id</th>
@@ -18,7 +18,7 @@
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-vehicle>
+    <ng-template pTemplate="body" let-vehicle let-i="rowIndex">
       <tr>
         <td>{{ vehicle.Id }}</td>
         <td>{{ vehicle.RegistrationPlate }}</td>
@@ -29,18 +29,10 @@
         <td>{{ vehicle.IsInsured ? "Ja" : "Nein" }}</td>
         <td>{{ vehicle.OwnerMail }}</td>
         <td>
-          <button
-            (click)="onEdit(vehicle.index)"
-            pButton
-            icon="pi pi-pencil"
-          ></button>
+          <button (click)="onEdit(i)" pButton icon="pi pi-pencil"></button>
         </td>
         <td>
-          <button
-            (click)="onDelete(vehicle.index)"
-            pButton
-            icon="pi pi-trash"
-          ></button>
+          <button (click)="onDelete(i)" pButton icon="pi pi-trash"></button>
         </td>
       </tr>
     </ng-template>

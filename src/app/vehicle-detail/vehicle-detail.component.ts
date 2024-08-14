@@ -1,11 +1,9 @@
-import { formatDate, NgFor } from '@angular/common';
+import { formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
+  inject,
   OnInit,
-  Output,
 } from '@angular/core';
 import {
   FormControl,
@@ -19,7 +17,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { ChipsModule } from 'primeng/chips';
-import { Vehicle } from 'src/app/vehicle-detail/Vehicle';
+import { Vehicle } from 'src/app/state/Vehicle';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -38,8 +37,8 @@ import { Vehicle } from 'src/app/vehicle-detail/Vehicle';
   ],
 })
 export class VehicleDetailComponent implements OnInit {
-  @Input({ required: true }) vehicle!: Vehicle;
-  @Output() saveVehicle = new EventEmitter<Vehicle>();
+  private dialogRef = inject(DynamicDialogRef);
+  private dialogConfig = inject(DynamicDialogConfig);
   vehicleForm = new FormGroup({
     Id: new FormControl('', Validators.required),
     RegistrationPlate: new FormControl('', Validators.required),
@@ -55,19 +54,27 @@ export class VehicleDetailComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    const vehicle = this.dialogConfig.data.vehicle as Vehicle;
+    if (vehicle === undefined) {
+      console.error(
+        'No Vehicle specified in vehicle details',
+        this.dialogConfig,
+        this.dialogRef
+      );
+    }
     this.vehicleForm.reset({
-      Id: this.vehicle.Id,
-      RegistrationPlate: this.vehicle.RegistrationPlate,
-      Brand: this.vehicle.Brand,
-      Model: this.vehicle.Model,
+      Id: vehicle.Id,
+      RegistrationPlate: vehicle.RegistrationPlate,
+      Brand: vehicle.Brand,
+      Model: vehicle.Model,
       RegistrationDate: formatDate(
-        this.vehicle.RegistrationDate,
+        vehicle.RegistrationDate,
         'yyyy-MM-dd',
         'en'
       ),
-      Mileage: this.vehicle.Mileage,
-      IsInsured: this.vehicle.IsInsured,
-      OwnerMail: this.vehicle.OwnerMail,
+      Mileage: vehicle.Mileage,
+      IsInsured: vehicle.IsInsured,
+      OwnerMail: vehicle.OwnerMail,
     });
   }
 
@@ -85,7 +92,6 @@ export class VehicleDetailComponent implements OnInit {
       data.IsInsured ?? false,
       data.OwnerMail ?? ''
     );
-    this.saveVehicle.emit(vehicle);
-    return;
+    this.dialogRef.close(vehicle);
   }
 }
