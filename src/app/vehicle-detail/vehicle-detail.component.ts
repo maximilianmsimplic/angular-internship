@@ -19,9 +19,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { ChipsModule } from 'primeng/chips';
-import { ToastModule } from 'primeng/toast';
-import { tempArray, Vehicle } from 'src/app/vehicle-detail/Vehicle';
-import { MessageService } from 'primeng/api';
+import { Vehicle } from 'src/app/vehicle-detail/Vehicle';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -37,9 +35,7 @@ import { MessageService } from 'primeng/api';
     CalendarModule,
     ButtonModule,
     ChipsModule,
-    ToastModule,
   ],
-  providers: [MessageService],
 })
 export class VehicleDetailComponent implements OnInit {
   @Input({ required: true }) vehicle!: Vehicle;
@@ -58,7 +54,6 @@ export class VehicleDetailComponent implements OnInit {
     OwnerMail: new FormControl('', [Validators.required, Validators.email]),
   });
 
-  constructor(private messageService: MessageService) {}
   ngOnInit(): void {
     this.vehicleForm.reset({
       Id: this.vehicle.Id,
@@ -92,24 +87,5 @@ export class VehicleDetailComponent implements OnInit {
     );
     this.saveVehicle.emit(vehicle);
     return;
-
-    tempArray.push(vehicle);
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Gespeichert',
-      detail: 'Fahrzeug wurde gespeichert',
-    });
-    console.log(tempArray);
-
-    this.vehicleForm.reset({
-      Id: '',
-      RegistrationPlate: '',
-      Brand: [],
-      Model: '',
-      RegistrationDate: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
-      Mileage: 0,
-      IsInsured: false,
-      OwnerMail: '',
-    });
   }
 }
