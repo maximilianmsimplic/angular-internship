@@ -1,0 +1,54 @@
+<p>Fahrzeuge:</p>
+<div *ngIf="vehicles.length === 0; else vehicleTable">
+  Keine Fahrzeuge vorhanden
+</div>
+<ng-template #vehicleTable>
+  <p-table [value]="indexedVehicles">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Id</th>
+        <th>RegistrationPlate</th>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>RegistrationDate</th>
+        <th>Mileage</th>
+        <th>IsInsured</th>
+        <th>OwnerMail</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vehicle>
+      <tr>
+        <td>{{ vehicle.Id }}</td>
+        <td>{{ vehicle.RegistrationPlate }}</td>
+        <td>{{ vehicle.Brand.join("; ") }}</td>
+        <td>{{ vehicle.Model }}</td>
+        <td>{{ vehicle.RegistrationDate | date : "dd-MM-yyyy" }}</td>
+        <td>{{ vehicle.Mileage }}</td>
+        <td>{{ vehicle.IsInsured ? "Ja" : "Nein" }}</td>
+        <td>{{ vehicle.OwnerMail }}</td>
+        <td>
+          <button icon="pi pi-pencil" (onClick)="onEdit()">
+            {{ vehicle.index }}
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
+<p-button (onClick)="onAdd()"
+  ><i class="pi pi-plus mr-1"></i>Neues Fahrzeug hinzufügen</p-button
+>
+<p-dialog
+  [modal]="true"
+  [visible]="true"
+  *ngIf="editVehicle !== undefined"
+  [style]="{ width: '80%' }"
+  (visibleChange)="onCancel()"
+  header="Fahrzeug Details"
+>
+  <app-vehicle-detail
+    [vehicle]="editVehicle!"
+    (saveVehicle)="onSave($event)"
+  ></app-vehicle-detail>
+</p-dialog>

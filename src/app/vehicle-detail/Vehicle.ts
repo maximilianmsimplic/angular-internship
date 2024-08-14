@@ -10,3 +10,5 @@ export class Vehicle {
     public OwnerMail: string
   ) {}
 }
+
+export const tempArray: Vehicle[] = [];

@@ -1,7 +1,13 @@
 import { formatDate, NgFor } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
-  FormArray,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -14,17 +20,16 @@ import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { ChipsModule } from 'primeng/chips';
 import { ToastModule } from 'primeng/toast';
-import { Vehicle } from 'src/app/vehicle-management/Vehicle';
+import { tempArray, Vehicle } from 'src/app/vehicle-detail/Vehicle';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-vehicle-management',
-  templateUrl: './vehicle-management.component.html',
-  styleUrls: ['./vehicle-management.component.scss'],
+  selector: 'app-vehicle-detail',
+  templateUrl: './vehicle-detail.component.html',
+  styleUrls: ['./vehicle-detail.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgFor,
     ReactiveFormsModule,
     InputTextModule,
     InputNumberModule,
@@ -36,7 +41,9 @@ import { MessageService } from 'primeng/api';
   ],
   providers: [MessageService],
 })
-export class VehicleManagementComponent {
+export class VehicleDetailComponent implements OnInit {
+  @Input({ required: true }) vehicle!: Vehicle;
+  @Output() saveVehicle = new EventEmitter<Vehicle>();
   vehicleForm = new FormGroup({
     Id: new FormControl('', Validators.required),
     RegistrationPlate: new FormControl('', Validators.required),
@@ -50,9 +57,24 @@ export class VehicleManagementComponent {
     IsInsured: new FormControl(false, Validators.required),
     OwnerMail: new FormControl('', [Validators.required, Validators.email]),
   });
-  tempArray: Vehicle[] = [];
 
   constructor(private messageService: MessageService) {}
+  ngOnInit(): void {
+    this.vehicleForm.reset({
+      Id: this.vehicle.Id,
+      RegistrationPlate: this.vehicle.RegistrationPlate,
+      Brand: this.vehicle.Brand,
+      Model: this.vehicle.Model,
+      RegistrationDate: formatDate(
+        this.vehicle.RegistrationDate,
+        'yyyy-MM-dd',
+        'en'
+      ),
+      Mileage: this.vehicle.Mileage,
+      IsInsured: this.vehicle.IsInsured,
+      OwnerMail: this.vehicle.OwnerMail,
+    });
+  }
 
   onSave() {
     const data = this.vehicleForm.value;
@@ -68,14 +90,16 @@ export class VehicleManagementComponent {
       data.IsInsured ?? false,
       data.OwnerMail ?? ''
     );
+    this.saveVehicle.emit(vehicle);
+    return;
 
-    this.tempArray.push(vehicle);
+    tempArray.push(vehicle);
     this.messageService.add({
       severity: 'success',
       summary: 'Gespeichert',
       detail: 'Fahrzeug wurde gespeichert',
     });
-    console.log(this.tempArray);
+    console.log(tempArray);
 
     this.vehicleForm.reset({
       Id: '',
