@@ -49,19 +49,5 @@
 <p-button (onClick)="onAdd()"
   ><i class="pi pi-plus mr-1"></i>Neues Fahrzeug hinzufügen</p-button
 >
-<p-dialog
-  [modal]="true"
-  [visible]="true"
-  *ngIf="editVehicle !== undefined"
-  [style]="{ width: '80%' }"
-  (visibleChange)="onCancel()"
-  header="Fahrzeug Details"
->
-  <app-vehicle-detail
-    [vehicle]="editVehicle!"
-    (saveVehicle)="onSave($event)"
-  ></app-vehicle-detail>
-</p-dialog>
 <p-confirmDialog></p-confirmDialog>
-
 <p-toast />

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Vehicle } from '../vehicle-detail/Vehicle';
+import { Vehicle } from '../state/Vehicle';
 import { VehicleDetailComponent } from '../vehicle-detail/vehicle-detail.component';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -8,6 +8,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -17,54 +18,68 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    VehicleDetailComponent,
     TableModule,
     ButtonModule,
     DialogModule,
     ToastModule,
     ConfirmDialogModule,
   ],
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService, ConfirmationService, DialogService],
 })
 export class VehicleListComponent {
   vehicles: Vehicle[] = [];
   editVehicle: Vehicle | undefined;
   isNewVehicle = false;
 
-  constructor(
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
-  ) {}
+  messageService = inject(MessageService);
+  confirmationService = inject(ConfirmationService);
+  dialogService = inject(DialogService);
+  dialogRef: DynamicDialogRef | undefined;
 
   get indexedVehicles() {
     return this.vehicles.map((val, index) => ({ ...val, index }));
   }
 
   onAdd() {
-    this.isNewVehicle = true;
-    this.editVehicle = new Vehicle('', '', [], '', new Date(), 0, false, '');
-  }
-  onEdit(index: number) {
-    this.isNewVehicle = false;
-    this.editVehicle = this.vehicles[index];
-  }
-  onCancel() {
-    this.editVehicle = undefined;
-  }
-  onSave(vehicle: Vehicle) {
-    if (this.isNewVehicle) {
-      this.vehicles.push(vehicle);
-    } else if (this.editVehicle !== undefined) {
-      Object.assign(this.editVehicle, vehicle);
-    }
-    this.editVehicle = undefined;
-    this.isNewVehicle = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Gespeichert',
-      detail: 'Fahrzeug wurde gespeichert',
+    this.dialogRef = this.dialogService.open(VehicleDetailComponent, {
+      header: 'Neues Fahrzeug hinzufügen',
+      width: '80vw',
+      data: {
+        vehicle: new Vehicle('', '', [], '', new Date(), 0, false, ''),
+      },
+    });
+    this.dialogRef.onClose.subscribe((vehicle?: Vehicle) => {
+      if (vehicle) {
+        this.vehicles.push(vehicle);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Gespeichert',
+          detail: 'Neues Fahrzeug wurde gespeichert',
+        });
+      }
     });
   }
+
+  onEdit(index: number) {
+    this.dialogRef = this.dialogService.open(VehicleDetailComponent, {
+      header: 'Fahrzeugdetails',
+      width: '80vw',
+      data: {
+        vehicle: this.vehicles[index],
+      },
+    });
+    this.dialogRef.onClose.subscribe((vehicle?: Vehicle) => {
+      if (vehicle) {
+        this.vehicles.push(vehicle);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Gespeichert',
+          detail: 'Fahrzeug wurde gespeichert',
+        });
+      }
+    });
+  }
+
   onDelete(index: number) {
     const vehicleId = this.vehicles[index].Id;
     this.confirmationService.confirm({

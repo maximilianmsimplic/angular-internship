@@ -11,4 +11,8 @@ export class Vehicle {
   ) {}
 }
 
-export const tempArray: Vehicle[] = [];
+export interface VehicleStateModel {
+  vehicles: Vehicle[];
+  selectedVehicleIndex: number | undefined;
+  isNewVehicle: boolean;
+}
