@@ -14,7 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { lastValueFrom, Observable, take } from 'rxjs';
+import { firstValueFrom, lastValueFrom, Observable, take } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { VehicleActions } from '../state/vehiclesList.actions';
 import { VehicleService } from '../vehicle.service';
@@ -68,7 +68,7 @@ export class VehicleListComponent implements OnInit {
     });
     this.dialogRef.onClose.subscribe(async (vehicle?: Vehicle) => {
       if (vehicle) {
-        const vehicles = await lastValueFrom(this.vehicles$.pipe(take(1)));
+        const vehicles = await firstValueFrom(this.vehicles$);
         if (vehicles.some((val) => val.id === vehicle.id)) {
           this.messageService.add({
             severity: 'error',
