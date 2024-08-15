@@ -6,7 +6,13 @@
   <div class="field grid">
     <label for="Id" class="col-2">Id</label>
     <div class="col-10 p-fluid">
-      <input id="Id" pInputText type="text" formControlName="Id" />
+      <input
+        id="Id"
+        [readOnly]="!canEditId"
+        pInputText
+        type="text"
+        formControlName="Id"
+      />
     </div>
   </div>
   <div class="field grid">

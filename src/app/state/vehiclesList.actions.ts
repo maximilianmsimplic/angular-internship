@@ -6,7 +6,7 @@ export const VehicleActions = createActionGroup({
   events: {
     'Load Vehicles': props<{ vehicles: Vehicle[] }>(),
     'Add Vehicle': props<{ vehicle: Vehicle }>(),
-    'Edit Vehicle': props<{ vehicle: Vehicle; index: number }>(),
-    'Delete Vehicle': props<{ index: number }>(),
+    'Edit Vehicle': props<{ vehicle: Vehicle }>(),
+    'Delete Vehicle': props<{ id: string }>(),
   },
 });

@@ -26,13 +26,25 @@
     },
     {
       "id": "ABCD",
-      "registrationPlate": "ghghgh",
+      "registrationPlate": "123",
       "brand": [
         "hghgh"
       ],
       "model": "abc",
       "registrationDate": "2024-08-14T00:00:00.000Z",
       "mileage": 0,
+      "isInsured": false,
+      "ownerMail": "abc@mail.de"
+    },
+    {
+      "id": "ggh",
+      "registrationPlate": "wasd",
+      "brand": [
+        "a,b,c"
+      ],
+      "model": "abc",
+      "registrationDate": "2024-08-15T00:00:00.000Z",
+      "mileage": 99,
       "isInsured": false,
       "ownerMail": "abc@mail.de"
     }

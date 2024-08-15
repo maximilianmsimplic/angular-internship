@@ -90,9 +90,7 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  async onEdit(index: number) {
-    const vehicle = (await lastValueFrom(this.vehicles$.pipe(take(1))))[index];
-    const oldId = vehicle.id;
+  async onEdit(vehicle: Vehicle) {
     this.dialogRef = this.dialogService.open(VehicleDetailComponent, {
       header: 'Fahrzeugdetails',
       width: '80vw',
@@ -102,8 +100,8 @@ export class VehicleListComponent implements OnInit {
     });
     this.dialogRef.onClose.subscribe((vehicle?: Vehicle) => {
       if (vehicle) {
-        this.api.update(oldId, vehicle).subscribe(() => {
-          this.store.dispatch(VehicleActions.editVehicle({ vehicle, index }));
+        this.api.update(vehicle).subscribe(() => {
+          this.store.dispatch(VehicleActions.editVehicle({ vehicle }));
           this.messageService.add({
             severity: 'success',
             summary: 'Gespeichert',
@@ -114,15 +112,14 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  async onDelete(index: number) {
-    const vehicle = (await lastValueFrom(this.vehicles$.pipe(take(1))))[index];
+  async onDelete(id: string) {
     this.confirmationService.confirm({
       header: 'Fahrzeug löschen',
-      message: `Möchtest du das Fahrzeug mit Id: ${vehicle.id} wirklich löschen?`,
+      message: `Möchtest du das Fahrzeug mit Id: ${id} wirklich löschen?`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.api.delete(vehicle).subscribe(() => {
-          this.store.dispatch(VehicleActions.deleteVehicle({ index }));
+        this.api.delete(id).subscribe(() => {
+          this.store.dispatch(VehicleActions.deleteVehicle({ id }));
           this.messageService.add({
             severity: 'info',
             summary: 'Gelöscht',

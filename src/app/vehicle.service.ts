@@ -13,10 +13,10 @@ export class VehicleService {
   add(vehicle: Vehicle) {
     return this.http.post(this.url + '/vehicles', vehicle);
   }
-  update(oldId: string, vehicle: Vehicle) {
-    return this.http.put(this.url + '/vehicles/' + oldId, vehicle);
+  update(vehicle: Vehicle) {
+    return this.http.put(this.url + '/vehicles/' + vehicle.id, vehicle);
   }
-  delete(vehicle: Vehicle) {
-    return this.http.delete(this.url + '/vehicles/' + vehicle.id);
+  delete(id: string) {
+    return this.http.delete(this.url + '/vehicles/' + id);
   }
 }

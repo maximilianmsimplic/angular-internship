@@ -18,7 +18,7 @@
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-vehicle let-i="rowIndex">
+    <ng-template pTemplate="body" let-vehicle>
       <tr>
         <td>{{ vehicle.id }}</td>
         <td>{{ vehicle.registrationPlate }}</td>
@@ -29,10 +29,18 @@
         <td>{{ vehicle.isInsured ? "Ja" : "Nein" }}</td>
         <td>{{ vehicle.ownerMail }}</td>
         <td>
-          <button (click)="onEdit(i)" pButton icon="pi pi-pencil"></button>
+          <button
+            (click)="onEdit(vehicle)"
+            pButton
+            icon="pi pi-pencil"
+          ></button>
         </td>
         <td>
-          <button (click)="onDelete(i)" pButton icon="pi pi-trash"></button>
+          <button
+            (click)="onDelete(vehicle.id)"
+            pButton
+            icon="pi pi-trash"
+          ></button>
         </td>
       </tr>
     </ng-template>

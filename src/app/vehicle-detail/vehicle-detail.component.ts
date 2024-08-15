@@ -39,6 +39,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class VehicleDetailComponent implements OnInit {
   private dialogRef = inject(DynamicDialogRef);
   private dialogConfig = inject(DynamicDialogConfig);
+  canEditId = false;
   vehicleForm = new FormGroup({
     Id: new FormControl('', Validators.required),
     RegistrationPlate: new FormControl('', Validators.required),
@@ -62,6 +63,7 @@ export class VehicleDetailComponent implements OnInit {
         this.dialogRef
       );
     }
+    this.canEditId = vehicle.id === '';
     this.vehicleForm.reset({
       Id: vehicle.id,
       RegistrationPlate: vehicle.registrationPlate,
